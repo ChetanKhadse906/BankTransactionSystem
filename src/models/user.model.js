@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
+import mongoose  from "mongoose";
+import bcrypt from 'bcryptjs'
 
 // define the structure of your schema
-const userSchema=await new mongoose.Schema({
+const userSchema=new mongoose.Schema({
 
     Email: {
-        tyep: String,
+       type: String,
         required: [true, "email is required"],
         trim: true,
         lowercase: true,
@@ -19,7 +20,7 @@ const userSchema=await new mongoose.Schema({
         select: false
     },
 
-    Usrename:{
+    Username:{
         type: String,
         required: [true, "Username is required"]
     }
@@ -28,6 +29,23 @@ const userSchema=await new mongoose.Schema({
         timestamps: true
     }
 )
+
+// Hash password before saving
+userSchema.pre("save", async function () {
+  if (!this.isModified("Password")) {
+    return;
+  }
+
+  this.Password = await bcrypt.hash(this.Password, 10);
+});
+
+// Compare password during login
+userSchema.methods.comparePassword = async function (password) {
+
+    console.log(password, this.password)
+  return bcrypt.compare(password, this.Password);
+};
+
 
 // create model to perfrom the operations
 const userModel=mongoose.model("User", userSchema);
