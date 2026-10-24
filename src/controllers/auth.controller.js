@@ -1,6 +1,7 @@
 import userModel from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import config from '../config/config.js'
+import emailService from '../services/email.service.js'
 
 // user is created after unique credentials(email) is checked in the middleware
 const registerUser=async(req, res)=>{
@@ -19,6 +20,8 @@ const registerUser=async(req, res)=>{
         message: "User created Successfully",
         user
     })
+
+    await emailService.sendRegistrationEmail(user.Email, user.Username)
 }
 
 
