@@ -31,9 +31,9 @@ const loginUser=async(req, res)=>{
     const user=req.user;
 
     // create jwt token for the user
-    const token=await jwt.sign({
+    const token=jwt.sign({
         
-        id: user._id 
+        userId: user._id 
     }, config.JWT_SECRET,
         {
             expiresIn: "7d"

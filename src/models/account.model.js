@@ -1,24 +1,27 @@
 import mongoose from 'mongoose'
 
-const accoonutSchema=new mongoose.Schema({
+const accountSchema=new mongoose.Schema({
 
     User:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
         required: [true, "Account must be associated with a user"],
         index: true
     },
 
     Status:{
+        type: String,
         enum:{
-            Values:["ACTIVE", "FROOZEN", "CLOSED"],
-
-            Message: "Status can be either ACTIVE, FROOZEN or CLOSED"
-        }
+            values:["ACTIVE", "FROZEN", "CLOSED"],
+            message: "Status can be either ACTIVE, FROZEN or CLOSED"
+        },
+        default: "ACTIVE"
     },
 
     Currency:{
-        default: "INR"
+        type: String,
+        default: "INR",
+        required: [true, "Currency is required to create account"]
     }
 },
     {
@@ -26,5 +29,10 @@ const accoonutSchema=new mongoose.Schema({
     }
 )
 
+// create index
+accountSchema.index({User:1, Status: 1});
+
 // create model
-const acoountModel=mongoose.model("Account", accoonutSchema)
+const accountModel=mongoose.model("Account", accountSchema)
+
+export default accountModel;

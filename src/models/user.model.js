@@ -48,6 +48,6 @@ userSchema.methods.comparePassword = async function (password) {
 
 
 // create model to perfrom the operations
-const userModel=mongoose.model("User", userSchema);
+const userModel=mongoose.model("user", userSchema);
 
 export default userModel;
