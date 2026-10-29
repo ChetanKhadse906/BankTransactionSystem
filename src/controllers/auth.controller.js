@@ -24,7 +24,6 @@ const registerUser=async(req, res)=>{
     await emailService.sendRegistrationEmail(user.Email, user.Username)
 }
 
-
 // login user
 const loginUser=async(req, res)=>{
 
